@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Lazyscripts by lazy-dev</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Lazyscripts</h1>
+        <h2></h2>
+        <a href="https://github.com/lazy-dev/lazyscripts" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a name="lazyscripts" class="anchor" href="#lazyscripts"><span class="octicon octicon-link"></span></a>LazyScripts</h1>
+
+<p>This is a set of bash shell functions to simplify and automate specific routine tasks, as well as some more specialized ones.</p>
+
+<h2>
+<a name="compatibility" class="anchor" href="#compatibility"><span class="octicon octicon-link"></span></a>Compatibility</h2>
+
+<ul>
+<li>RedHat Enterprise Linux 5+</li>
+<li>CentOS 5+</li>
+<li>Ubuntu 10.04+</li>
+</ul><h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>Run this bash function as root:</p>
+
+<div class="highlight highlight-bash"><pre><span class="k">function </span>lsgethelper<span class="o">()</span> <span class="o">{</span>
+        <span class="nb">local </span><span class="nv">LZDIR</span><span class="o">=</span>/root/.lazyscripts/tools<span class="p">;</span>
+        <span class="k">if </span><span class="nb">command</span> -v git 2&gt;<span class="p">&amp;</span>1 1&gt;/dev/null<span class="p">;</span> <span class="k">then</span>
+<span class="k">            if</span> <span class="o">[[</span> -d <span class="k">${</span><span class="nv">LZDIR</span><span class="k">}</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+<span class="k">                    </span><span class="nb">cd</span> <span class="s2">"${LZDIR}"</span> <span class="se">\</span>
+                    <span class="o">&amp;&amp;</span> git reset --hard HEAD <span class="se">\</span>
+                    <span class="o">&amp;&amp;</span> git clean -f <span class="se">\</span>
+                    <span class="o">&amp;&amp;</span> git pull git://github.com/hhoover/lazyscripts.git master<span class="p">;</span> <span class="se">\</span>
+            <span class="k">else</span>
+<span class="k">                    </span><span class="nb">cd</span> <span class="se">\</span>
+                    <span class="o">&amp;&amp;</span> git clone git://github.com/hhoover/lazyscripts.git <span class="s2">"${LZDIR}"</span><span class="p">;</span>
+            <span class="k">fi</span>
+<span class="k">            </span><span class="nb">cd</span><span class="p">;</span>
+            <span class="nb">source</span> <span class="k">${</span><span class="nv">LZDIR</span><span class="k">}</span>/ls-init.sh<span class="p">;</span>
+        <span class="k">else</span>
+<span class="k">            </span>rm -rf <span class="s2">"${LZDIR}"</span>/lazyscripts-master
+            <span class="nb">cd</span> <span class="s2">"${LZDIR}"</span> <span class="se">\</span>
+            <span class="o">&amp;&amp;</span> curl -L https://github.com/hhover/lazyscripts/archive/master.tar.gz <span class="p">|</span> tar xvz
+            <span class="nb">cd</span><span class="p">;</span>
+            <span class="nb">source</span> <span class="s2">"${LZDIR}"</span>/lazyscripts-master/ls-init.sh<span class="p">;</span>
+        <span class="k">fi</span>
+<span class="o">}</span>
+lsgethelper <span class="o">&amp;&amp;</span> lslogin
+</pre></div>
+
+<p>Throw this in your .bashrc for extra credit.</p>
+
+<h2>
+<a name="functions" class="anchor" href="#functions"><span class="octicon octicon-link"></span></a>Functions</h2>
+
+<table>
+<thead><tr>
+<th align="left"><strong>Function</strong></th>
+<th align="left"><strong>Description</strong></th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="left">lsinfo</td>
+<td align="left">Display useful system information</td>
+</tr>
+<tr>
+<td align="left">lsbwprompt</td>
+<td align="left">Switch to a plain prompt.</td>
+</tr>
+<tr>
+<td align="left">lscolorprompt</td>
+<td align="left">Switch to a fancy colorized prompt.</td>
+</tr>
+<tr>
+<td align="left">lsbigfiles</td>
+<td align="left">List the top 50 files based on disk usage.</td>
+</tr>
+<tr>
+<td align="left">lsmytuner</td>
+<td align="left">MySQL Tuner.</td>
+</tr>
+<tr>
+<td align="left">lshighio</td>
+<td align="left">Reports stats on processes in an uninterruptable sleep state.</td>
+</tr>
+<tr>
+<td align="left">lsmylogin</td>
+<td align="left">Auto login to MySQL</td>
+</tr>
+<tr>
+<td align="left">lsmyengines</td>
+<td align="left">List MySQL tables and their storage engine.</td>
+</tr>
+<tr>
+<td align="left">lsmyusers</td>
+<td align="left">List MySQL users and grants.</td>
+</tr>
+<tr>
+<td align="left">lsmycreate</td>
+<td align="left">Creates a MySQL DB and MySQL user</td>
+</tr>
+<tr>
+<td align="left">lsmycopy</td>
+<td align="left">Copies an existing database to a new database.</td>
+</tr>
+<tr>
+<td align="left">lsap</td>
+<td align="left">Show a virtual host listing.</td>
+</tr>
+<tr>
+<td align="left">lsapcheck</td>
+<td align="left">Verify apache max client settings and memory usage.</td>
+</tr>
+<tr>
+<td align="left">lsapdocs</td>
+<td align="left">Prints out Apache's DocumentRoots</td>
+</tr>
+<tr>
+<td align="left">lsapproc</td>
+<td align="left">Shows the memory used by each Apache process</td>
+</tr>
+<tr>
+<td align="left">lsrblcheck</td>
+<td align="left">Server Email Blacklist Check</td>
+</tr>
+<tr>
+<td align="left">lscloudkick</td>
+<td align="left">Installs the Cloudkick agent</td>
+</tr>
+<tr>
+<td align="left">lsvhost</td>
+<td align="left">Add an Apache virtual host</td>
+</tr>
+<tr>
+<td align="left">lsvsftpd</td>
+<td align="left">Installs/configures vsftpd</td>
+</tr>
+<tr>
+<td align="left">lspostfix</td>
+<td align="left">Set up Postfix for relaying email</td>
+</tr>
+<tr>
+<td align="left">lsparsar</td>
+<td align="left">Pretty sar output</td>
+</tr>
+<tr>
+<td align="left">lslsync</td>
+<td align="left">Install lsyncd and configure this server as a master</td>
+</tr>
+<tr>
+<td align="left">lswordpress</td>
+<td align="left">Install Wordpress on this server</td>
+</tr>
+<tr>
+<td align="left">lsdrupal</td>
+<td align="left">Install Drupal 7 on this server</td>
+</tr>
+<tr>
+<td align="left">lswebmin</td>
+<td align="left">Install Webmin on this server</td>
+</tr>
+<tr>
+<td align="left">lsvarnish</td>
+<td align="left">Installs Varnish 3.0</td>
+</tr>
+<tr>
+<td align="left">lsconcurchk</td>
+<td align="left">Show concurrent connections</td>
+</tr>
+<tr>
+<td align="left">lscrtchk</td>
+<td align="left">Check SSL Cert/Key to make sure they match</td>
+</tr>
+<tr>
+<td align="left">lsrpaf</td>
+<td align="left">Install mod_rpaf to set correct client IP behind a proxy.</td>
+</tr>
+<tr>
+<td align="left">lspma</td>
+<td align="left">Installs phpMyAdmin</td>
+</tr>
+<tr>
+<td align="left">lsnginx</td>
+<td align="left">Replace Apache with nginx/php-fpm</td>
+</tr>
+<tr>
+<td align="left">lshaproxy</td>
+<td align="left">Install HAProxy on this server</td>
+</tr>
+<tr>
+<td align="left">lshppool</td>
+<td align="left">Adds a new pool to an existing HAProxy config</td>
+</tr>
+<tr>
+<td align="left">lswhatis</td>
+<td align="left">Output the script that would be run with a specific command.</td>
+</tr>
+<tr>
+<td align="left">lsnodejs</td>
+<td align="left">Installs Node.js and Node Package Manager</td>
+</tr>
+<tr>
+<td align="left">lsapitools</td>
+<td align="left">Installs API tools for Rackspace Cloud</td>
+</tr>
+<tr>
+<td align="left">lsrecap</td>
+<td align="left">Installs Recap - <a href="https://github.com/rackerlabs/recap">https://github.com/rackerlabs/recap</a>
+</td>
+</tr>
+<tr>
+<td align="left">lsnova</td>
+<td align="left">Nova Configuration generator</td>
+</tr>
+</tbody>
+</table><p>Enjoy!</p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/lazy-dev/lazyscripts/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/lazy-dev/lazyscripts/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/lazy-dev/lazyscripts"></a> is maintained by <a href="https://github.com/lazy-dev">lazy-dev</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
